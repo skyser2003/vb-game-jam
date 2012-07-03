@@ -1,18 +1,4 @@
-import pygame
-
-class Vec2:
-    x = 0
-    y = 0
-    def __init__(self,_x,_y):
-        x = _x
-        y = _y
-    def set(_x,_y):
-        x = _x
-        y = _y
-    def setX(_x):
-        x = _x
-    def setY(_y):
-        y = _y
+from vector import Vec2
 
 class Player:
     __acceleration = Vec2(0,0)

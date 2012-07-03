@@ -15,6 +15,7 @@ class LoveQuestion(TrueFalseQuestion):
     __LoveeDir = ""
 
     def __init__(self,_LoverDir,_LoveeDir,_answer):
+        TrueFalseQuestion.__init__(self)
         self.__LoverDir = _LoverDir
         self.__LoveeDir = _LoveeDir
         self.__answer = _answer
