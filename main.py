@@ -7,37 +7,21 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((700,450))
     pygame.display.set_caption("Dinosaur Run")
-    #pygame.mouse.set_visible(0)
-
-    background = pygame.image.load("images/background.png")
-    redColor = pygame.Color(255,0,0)
-    screen.blit(background, (0,0))
-    pygame.draw.circle(background, redColor, (300,300),20)
-
+    pygame.mouse.set_visible(0)
     clock = pygame.time.Clock()
+    counter = 0
 
-    running = True
-    state = 0
+    background = pygame.image.load("/Users/FrozenGuy/Pictures/Raichu.png")
 
-    font = pygame.font.Font(None, 18)
-    largeFont = pygame.font.Font(None, 30)
-    
-    pygame.display.update()
-    while running:
-        pygame.draw.line(background, redColor, (0,0),(700,350),5)
+    while True:
+        screen.blit(background,(0,0))
+        clock.tick(60)
+        pygame.display.update()
+        counter += 1
 
-    
-    for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == MOUSEMOTION:
-                mousex, mousey = event.pos
-            elif event.type == MOUSEBUTTONUP:
-                mousex, mousey = event.pos
-            
-
-    
+        if(counter == 300):
+            break
+        
     pygame.quit()
 
 if __name__ == '__main__':
