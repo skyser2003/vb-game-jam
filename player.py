@@ -14,7 +14,7 @@ class Vec2:
     def setY(_y):
         y = _y
 
-class player:
+class Player:
     __acceleration = Vec2(0,0)
     __speed = Vec2(0,0)
     __position = Vec2(0,0)
