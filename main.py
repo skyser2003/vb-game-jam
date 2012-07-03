@@ -9,9 +9,9 @@ def main():
     pygame.display.set_caption("Dinosaur Run")
     pygame.mouse.set_visible(0)
 
-    #background = pygame.image.load("images/background.gif")
+    background = pygame.image.load("images/background.png")
     
-    #screen.blit(background, (0,0))
+    screen.blit(background, (0,0))
 
     running = True
 
