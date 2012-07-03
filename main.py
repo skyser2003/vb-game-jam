@@ -12,12 +12,12 @@ def main():
     pygame.display.set_caption("Dinosaur Run")
     
     background = pygame.image.load("images/background.png")
+    sky = pygame.image.load("images/sky.png")
     red = pygame.Color(255,0,0)
     green = pygame.Color(0,255,0)
     blue = pygame.Color(0,0,255)
     white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
-    #screen.blit(background, (0,0))
     
 
     clock = pygame.time.Clock()
@@ -57,6 +57,7 @@ def main():
                         running = False                              
         
         elif state == 1:
+            screen.blit(sky, (0,0))
             screen.blit(background, (0,0))
             for event in pygame.event.get():
                     if event.type == QUIT:
