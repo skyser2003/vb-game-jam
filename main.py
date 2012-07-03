@@ -3,8 +3,11 @@ from util import *
 from vector import Vec2
 from button import Button
 from button import RectShape
+import spritesheet
+from spritesheet import SpriteStripAnim
 from pygame.locals import *
 from pygame.compat import geterror
+
 
 def main():
     pygame.init()
@@ -18,7 +21,8 @@ def main():
     blue = pygame.Color(0,0,255)
     white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
-    
+
+  
 
     clock = pygame.time.Clock()
 
@@ -31,7 +35,7 @@ def main():
     
     while running:
         
-
+         
         if state == 0:
             screen.blit(pygame.image.load("images/start.png"),(0,0))
             pygame.draw.rect(screen, red,(270,110,160,100))
@@ -57,22 +61,28 @@ def main():
                         running = False                              
         
         elif state == 1:
+            #playersheet = pygame.image.load("images/start.png")
             screen.blit(sky, (0,0))
             screen.blit(background, (0,0))
+           
+            
             for event in pygame.event.get():
                     if event.type == QUIT:
                         running = False
                     elif event.type == KEYDOWN:
                         state = 3
-                    elif event.type == MOUSEBUTTONUP:
+                    elif event.type == MOUSEMOTION:
                         mousex, mousey = event.pos
                         print (mousex,mousey)
+
+            print (mousex,mousey)
                         
         elif state == 2:
             pygame.draw.rect(screen,black, (0,0,700,450))
             pygame.draw.rect(screen,white,(520,320,160,60))
             button4 = Button(Vec2(600,350))
             button4.setShape(RectShape(160,60))
+            
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -80,7 +90,8 @@ def main():
                     print (mousex,mousey)
                     if button4.isInner(coord) == True:
                         state = 0
-                    
+            
+               
         elif state == 3:
             pygame.draw.rect(screen,black,(0,0,700,450))
             pygame.draw.rect(screen,white,(520,320,160,60))
@@ -99,7 +110,7 @@ def main():
                     if button6.isInner(coord) == True:
                         state = 0
         
-            
+        clock.tick(100)
         pygame.display.update()
     
     pygame.quit()
