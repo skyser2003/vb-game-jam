@@ -52,4 +52,6 @@ class Button:
            self.position.x = position[0]
            self.position.y = position[1]
     def isInner(self,coord):
-        return shape.isClicked(position,coord)
+        return self.shape.isInner(self.position,coord)
+    def setShape(self,shape):
+        self.shape = shape
