@@ -28,10 +28,12 @@ class player:
         self.__speed.y = speedY
     def setSpeed(self,speed):
         self.__speed = speed
-    def setSpeedX(self,speedX)
+    def setSpeedX(self,speedX):
         self.__speed.x = speedX
-    def setSpeedY(self.speedY)
+    def setSpeedY(self,speedY):
         self.__speed.y = speedY
+    def setPosition(self,position):
+        self.__position = position
     def update(self):
         self.__speed.x += self.__acceleration.x
         self.__speed.y += self.__acceleration.y
