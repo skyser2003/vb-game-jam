@@ -26,24 +26,27 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((700,450))
     pygame.display.set_caption("Dinosaur Run")
-    
     background = pygame.image.load("images/background.png")
     redColor = pygame.Color(255,0,0)
 
     #Load images and colors
-    start = pygame.image.load("images/start.png")
+    start = pygame.image.load("images/start.png") 
     background = pygame.image.load("images/background.png")
     sky = pygame.image.load("images/sky.png")
     cloud = pygame.image.load("images/cloud.png")
     heart1 = pygame.image.load("images/heart.png")
     heart2 = pygame.image.load("images/heart2.png")
     stone = pygame.image.load("images/stone.png")
-    red = pygame.Color(255,0,0)
-    green = pygame.Color(0,255,0)
-    blue = pygame.Color(0,0,255)
-    white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
-
+    
+    #Button images
+    start_button = pygame.image.load("images/start_button.png")
+    instruction_button = pygame.image.load("images/instruction_button.png")
+    end_button1 = pygame.image.load("images/end_button1.png")
+    home_button = pygame.image.load("images/home_button.png")
+    end_button2 = pygame.image.load("images/end_button2.png")
+    
+    #Character images
     player1 = pygame.image.load("images/player1.png")
     player2 = pygame.image.load("images/player2.png")
     player3 = pygame.image.load("images/player3.png")
@@ -53,6 +56,11 @@ def main():
     dino3 = pygame.image.load("images/dino3.png")
     dino4 = pygame.image.load("images/dino4.png")
     deathCharacter = pygame.image.load("images/bite.png")
+
+    #Initial usic file import
+    startmenu_bgm = pygame.mixer.Sound("sounds/startmenu.wav")
+    play_bgm = pygame.mixer.Sound("sounds/play.wav")
+    gameover_bgm = pygame.mixer.Sound("sounds/gameover.wav")
 
     #Create clock
     clock = pygame.time.Clock()
@@ -81,7 +89,7 @@ def main():
     loverPosition = (191,72)
     loveePosition = (354,72)
     heartPosition = (310,119)
-    
+
     #Load questions image
     for i in range(0,len(questions)):
         questionsLoverImage = questionsLoverImage[:i] + (pygame.image.load(questions[i].LoverDir),)
@@ -119,27 +127,30 @@ def main():
     life = 3
     deathAnimationCounter = 0
     fps = 100
-
-    #Positions
+    bgm = False
     deathCharacterPosition = (250,310)
-    
+
+
     while running:
         screen.blit(sky, (0,0))
         
         #Main Menu
         if state == SCENE_MAIN_MENU:
+            if bgm == False:
+                startmenu_bgm.play()
+                bgm = True
+            
             screen.blit(start,(0,0))
+            screen.blit(start_button, (270,110))
+            screen.blit(instruction_button, (270,220))
+            screen.blit(end_button1, (270,330))
 
-            pygame.draw.rect(screen, red,(270,110,160,100))
-            pygame.draw.rect(screen, green, (270,220,160,100))
-            pygame.draw.rect(screen, blue, (270,330,160,100))
             button1 = Button(Vec2(350,160))
             button1.setShape(RectShape(160,100))
             button2 = Button(Vec2(350,270))
             button2.setShape(RectShape(160,100))
             button3 = Button(Vec2(350,380))
             button3.setShape(RectShape(160,100))
-
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -147,9 +158,14 @@ def main():
 
                     if button1.isInner(coord) == True:
                         state = SCENE_GAME
+                        startmenu_bgm.stop()
+                        bgm = False
+
                     if button2.isInner(coord) == True:
                         state = SCENE_INSTRUCTION
                     if button3.isInner(coord) == True:
+                        startmenu_bgm.stop()
+                        bgm = False
                         running = False
 
                 #Game playing 
@@ -158,6 +174,10 @@ def main():
 
         #In-game
         elif state == SCENE_GAME:
+            if bgm == False:
+                play_bgm.play()
+                bgm = True
+
             #rolling background
             screen.blit(background,(rotateTimer,0))
             screen.blit(background,(rotateTimer+700,0))
@@ -280,8 +300,10 @@ def main():
                     running = False
                 elif event.type == KEYDOWN:
                     state = SCENE_ESC
+                    play_bgm.stop()
+                    bgm = False
 
-                #Mouse clicked, check whether trueButton or falseButton is clicked
+                #Mouse clicked, check whether trueButton or falseButton is clicked
                 elif event.type == MOUSEBUTTONDOWN:
                     mousex,mousey = event.pos
                     coord = Vec2(mousex,mousey)
@@ -310,6 +332,8 @@ def main():
                         running = False
                     elif event.type == KEYDOWN:
                         state = SCENE_ESC
+                        play_bgm.stop()
+                        bgm = False
                         running = False
                     elif event.type == MOUSEBUTTONUP:
                         mousex, mousey = event.pos
@@ -318,10 +342,10 @@ def main():
             if(life == 0):
                 state = SCENE_DEATH
 
-        #Instruction
+        #Instruction page
         elif state == SCENE_INSTRUCTION:
             pygame.draw.rect(screen,black, (0,0,700,450))
-            pygame.draw.rect(screen,white,(520,320,160,60))
+            screen.blit(home_button, (520,320))
             button4 = Button(Vec2(600,350))
             button4.setShape(RectShape(160,60))
             
@@ -342,12 +366,13 @@ def main():
 
             if(deathAnimationCounter == fps):
                 running = False
-                
-        #In-game menu(esc pressed)
-        elif state == SCENE_ESC:
-            pygame.draw.rect(screen,black,(0,0,700,450))
-            pygame.draw.rect(screen,white,(520,320,160,60))
-            pygame.draw.rect(screen,white,(20,320,160,60))
+            
+            play_bgm.stop()
+            gameover_bgm.play()
+            bgm = True
+
+            screen.blit(home_button, (20,320))
+            screen.blit(end_button2, (520,320))
             button5 = Button(Vec2(600,350))
             button5.setShape(RectShape(160,60))
             button6 = Button(Vec2(100,350))
@@ -361,8 +386,11 @@ def main():
                         running = False
                     if button6.isInner(coord) == True:
                         state = SCENE_MAIN_MENU
+                        gameover_bgm.stop()
+                        bgm = False
 
         clock.tick(fps)
+
         pygame.display.update()
 
     pygame.quit()
