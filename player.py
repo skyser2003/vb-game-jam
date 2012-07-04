@@ -1,10 +1,16 @@
+<<<<<<< local
 from character import Character
+=======
+from vector import Vec2
+import spritesheet
+from spritesheet import SpriteStripAnim
+>>>>>>> other
 
 class Player(Character):
     __damageReduceSpeed = 10
     __isDamaged = False
     __damageProgressTime = 0
-    
+
     def getAttacked(self):
         self.__speed.x -= self.__damageReduceSpeed
         self.__isDamaged = True

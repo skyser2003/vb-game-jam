@@ -5,6 +5,7 @@ from button import Button
 from button import RectShape
 from question import LoveQuestion
 import spritesheet
+import player
 from spritesheet import SpriteStripAnim
 from pygame.locals import *
 from pygame.compat import geterror
@@ -29,6 +30,12 @@ def main():
     white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
   
+
+
+    player1 = pygame.image.load("images/player1.png")
+    player2 = pygame.image.load("images/player2.png")
+    #character = player.player()
+
     #Create clock
     clock = pygame.time.Clock()
 
@@ -38,7 +45,6 @@ def main():
     #Fonts
     font = pygame.font.Font(None, 18)
     largeFont = pygame.font.Font(None, 30)
-
     
     #Questions
     questions = []
@@ -57,6 +63,8 @@ def main():
 
     trueButton.setShape(RectShape(120,120))
     falseButton.setShape(RectShape(120,120))
+
+    timer = 0
     
     while running:
         #Main Menu
@@ -89,6 +97,13 @@ def main():
             screen.blit(sky, (0,0))
             screen.blit(background, (0,0))
 
+            if timer%2 == 0:
+                screen.blit(player1, (300,271))
+            #elif timer%4 == 1:
+                #screen.blit(dino1, ())
+            elif timer%2 == 1:
+                screen.blit(player2, (300,271))
+
             if(questionOn == False):
                 questionOffTimer += 1
             else:
@@ -113,7 +128,9 @@ def main():
                 #Buttons
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),(400,0))
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),(400,200))
-
+              
+            timer += 1
+            #print timer
             for event in pygame.event.get():
                 #Quit game
                 if event.type == QUIT:
@@ -149,7 +166,10 @@ def main():
                             else:
                                 print "Answer Correct!"
 
-            #print (mousex,mousey)
+                    if event.type == QUIT:
+                        running = False
+                    elif event.type == KEYDOWN:
+                        state = 3
             
         #?? second button in main menu
         elif state == 2:
