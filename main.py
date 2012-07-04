@@ -4,6 +4,7 @@ from vector import Vec2
 from button import Button
 from button import RectShape
 import spritesheet
+import player
 from spritesheet import SpriteStripAnim
 from pygame.locals import *
 from pygame.compat import geterror
@@ -22,8 +23,10 @@ def main():
     white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
 
-  
-
+    player1 = pygame.image.load("images/player1.png")
+    player2 = pygame.image.load("images/player2.png")
+    player3 = pygame.image.load("images/player3.png")
+    player4 = pygame.image.load("images/player4.png")
     clock = pygame.time.Clock()
 
     running = True
@@ -31,10 +34,13 @@ def main():
 
     font = pygame.font.Font(None, 18)
     largeFont = pygame.font.Font(None, 30)
-    
+    timer = 0
+    rotateTimer = 0
+    playerx = 300
+    addx = 1
     
     while running:
-        
+        screen.blit(sky, (0,0))
          
         if state == 0:
             screen.blit(pygame.image.load("images/start.png"),(0,0))
@@ -61,11 +67,62 @@ def main():
                         running = False                              
         
         elif state == 1:
-            #playersheet = pygame.image.load("images/start.png")
-            screen.blit(sky, (0,0))
-            screen.blit(background, (0,0))
-           
+            #rolling background
+            screen.blit(background,(rotateTimer,0))
+            screen.blit(background,(rotateTimer+700,0))
+            rotateTimer -= 1
+            if rotateTimer == -700:
+                rotateTimer = 0
+
+            """if timer%4 == 0:
+                screen.blit(player1, (playerx,271))
+            elif timer%4 == 1:
+                screen.blit(player1, (playerx,271))
+            elif timer%4 == 2:
+                screen.blit(player2, (playerx,271))
+            elif timer%4 == 3:
+                screen.blit(player2, (playerx,271))
+            """            
+            #player animation        
+            if timer%15 == 0:
+                screen.blit(player1, (playerx,271))
+            elif timer%15 == 1:
+                screen.blit(player1, (playerx,271))
+            elif timer%15 == 2:
+                screen.blit(player2, (playerx,271))
+            elif timer%15 == 3:
+                screen.blit(player2, (playerx,271))
+            elif timer%15 == 4:
+                screen.blit(player3, (playerx,271))
+            elif timer%15 == 5:
+                screen.blit(player3, (playerx,271))
+            elif timer%15 == 6:
+                screen.blit(player3, (playerx,271))
+            elif timer%15 == 7:
+                screen.blit(player4, (playerx,271))
+            elif timer%15 == 8:
+                screen.blit(player4, (playerx,271))
+            elif timer%15 == 9:
+                screen.blit(player4, (playerx,271))
+            elif timer%15 == 10:
+                screen.blit(player3, (playerx,271))
+            elif timer%15 == 11:
+                screen.blit(player3, (playerx,271))
+            elif timer%15 == 12:
+                screen.blit(player2, (playerx,271))
+            elif timer%15 == 13:
+                screen.blit(player2, (playerx,271))
+            elif timer%15 == 14:
+                screen.blit(player1, (playerx,271))
+            #moving player back and forth
+            if playerx == 280:
+                addx = 1
+            if playerx == 320:
+                addx = -1
             
+            playerx += addx
+            timer += 1 
+    
             for event in pygame.event.get():
                     if event.type == QUIT:
                         running = False
@@ -73,9 +130,7 @@ def main():
                         state = 3
                     elif event.type == MOUSEMOTION:
                         mousex, mousey = event.pos
-                        print (mousex,mousey)
-
-            print (mousex,mousey)
+             
                         
         elif state == 2:
             pygame.draw.rect(screen,black, (0,0,700,450))
