@@ -20,11 +20,16 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((700,450))
     pygame.display.set_caption("Dinosaur Run")
+<<<<<<< local
+=======
     
     background = pygame.image.load("images/background.png")
     redColor = pygame.Color(255,0,0)
     #screen.blit(background, (0,0))
     
+>>>>>>> other
+
+<<<<<<< local
     #Load images and colors    
     background = pygame.image.load("images/background.png")
     sky = pygame.image.load("images/sky.png")
@@ -41,15 +46,21 @@ def main():
     #character = player.player()
 
     #Create clock
+=======
+>>>>>>> other
     clock = pygame.time.Clock()
 
     running = True
     state = 0
 
+<<<<<<< local
     #Fonts
+=======
+>>>>>>> other
     font = pygame.font.Font(None, 18)
     largeFont = pygame.font.Font(None, 30)
-
+    
+<<<<<<< local
     #Questions
     questions = []
     questions.insert(0,createLoveQuestion("cat.png","mouse.png",True))
@@ -69,12 +80,19 @@ def main():
     falseButton.setShape(RectShape(120,120))
 
     timer = 0
+=======
+>>>>>>> other
     
     while running:
+<<<<<<< local
         #Main Menu
+=======
+        
+
+>>>>>>> other
         if state == 0:
             screen.blit(pygame.image.load("images/start.png"),(0,0))
-
+<<<<<<< local
             pygame.draw.rect(screen, red,(270,110,160,100))
             pygame.draw.rect(screen, green, (270,220,160,100))
             pygame.draw.rect(screen, blue, (270,330,160,100))
@@ -85,7 +103,10 @@ def main():
             button3 = Button(Vec2(350,380))
             button3.setShape(RectShape(160,100))
 
+=======
+>>>>>>> other
             for event in pygame.event.get():
+<<<<<<< local
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
                     coord = Vec2(mousex,mousey)
@@ -97,13 +118,20 @@ def main():
                     if button3.isInner(coord) == True:
                         running = False
 
-                #Game playing 
+        #Game playing 
+=======
                 if event.type == KEYDOWN:
                     state = 1
-
+                    
+        
+>>>>>>> other
         elif state == 1:
+<<<<<<< local
             screen.blit(sky, (0,0))
+=======
+>>>>>>> other
             screen.blit(background, (0,0))
+<<<<<<< local
 
             if timer%2 == 0:
                 screen.blit(player1, (300,271))
@@ -139,8 +167,10 @@ def main():
               
             timer += 1
             #print timer
-
+=======
+>>>>>>> other
             for event in pygame.event.get():
+<<<<<<< local
                 #Quit game
                 if event.type == QUIT:
                     running = False
@@ -175,10 +205,14 @@ def main():
                             else:
                                 print "Answer Correct!"
 
+=======
+>>>>>>> other
                     if event.type == QUIT:
                         running = False
                     elif event.type == KEYDOWN:
+<<<<<<< local
                         state = 3
+=======
                         running = False
                     elif event.type == MOUSEBUTTONUP:
                         mousex, mousey = event.pos
@@ -194,7 +228,10 @@ def main():
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     state = 0
-
+        
+>>>>>>> other
+            
+<<<<<<< local
         #?? second button in main menu
         elif state == 2:
             pygame.draw.rect(screen,black, (0,0,700,450))
@@ -230,6 +267,8 @@ def main():
                         state = 0
         
         clock.tick(100)
+=======
+>>>>>>> other
         pygame.display.update()
     
     pygame.quit()

@@ -1,24 +1,24 @@
 class Question:
-    __answer = 0
+    answer = None
 
     def isTrue(self):
-        return self.__answer
+        return self.answer
     
 class TrueFalseQuestion(Question):
-    __answer = True
+    answer = True
 
     def isTrue(self):
-        return self.__answer
+        return self.answer
 
 class LoveQuestion(TrueFalseQuestion):
-    __LoverDir = ""
-    __LoveeDir = ""
+    LoverDir = ""
+    LoveeDir = ""
 
-    def __init__(self,_LoverDir,_LoveeDir,_answer):
-        self.__LoverDir = _LoverDir
-        self.__LoveeDir = _LoveeDir
-        self.__answer = _answer
+    def __init__(self,LoverDir,LoveeDir,answer):
+        self.LoverDir = LoverDir
+        self.LoveeDir = LoveeDir
+        self.answer = answer
     def getLoverDir(self):
-        return self.__LoverDir
+        return self.LoverDir
     def getLoveeDir(self):
-        return self.__LoveeDir
+        return self.LoveeDir
