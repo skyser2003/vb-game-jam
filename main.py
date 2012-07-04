@@ -26,13 +26,14 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((700,450))
     pygame.display.set_caption("Dinosaur Run")
-    background = pygame.image.load("images/background.png")
-    redColor = pygame.Color(255,0,0)
 
-    #Load images and colors
-    start = pygame.image.load("images/start.png") 
+
+    #Load images and colors 
     background = pygame.image.load("images/background.png")
+    far_background = pygame.image.load("images/far_background.png")
+    background_ending = pygame.image.load("images/background_ending.png")
     sky = pygame.image.load("images/sky.png")
+    sky_ending = pygame.image.load("images/sky_ending.png")
     cloud = pygame.image.load("images/cloud.png")
     heart1 = pygame.image.load("images/heart.png")
     heart2 = pygame.image.load("images/heart2.png")
@@ -56,6 +57,12 @@ def main():
     dino3 = pygame.image.load("images/dino3.png")
     dino4 = pygame.image.load("images/dino4.png")
     deathCharacter = pygame.image.load("images/bite.png")
+    bite1 = pygame.image.load("images/bite1.png")
+    bite2 = pygame.image.load("images/bite2.png")
+    bite3 = pygame.image.load("images/bite3.png")
+    bite4 = pygame.image.load("images/bite4.png")
+    bite5 = pygame.image.load("images/bite5.png")
+    gameover_font = pygame.image.load("images/gameover.png")
 
     #Initial usic file import
     startmenu_bgm = pygame.mixer.Sound("sounds/startmenu.wav")
@@ -123,7 +130,7 @@ def main():
     addx = 1
     dinox = 15
     addPlayerx = 1
-    addDinox = 1
+    addDinox = 0
     life = 3
     deathAnimationCounter = 0
     fps = 100
@@ -132,7 +139,7 @@ def main():
 
 
     while running:
-        screen.blit(sky, (0,0))
+
         
         #Main Menu
         if state == SCENE_MAIN_MENU:
@@ -140,7 +147,6 @@ def main():
                 startmenu_bgm.play()
                 bgm = True
             
-            screen.blit(start,(0,0))
             screen.blit(start_button, (270,110))
             screen.blit(instruction_button, (270,220))
             screen.blit(end_button1, (270,330))
@@ -177,26 +183,129 @@ def main():
             if bgm == False:
                 play_bgm.play()
                 bgm = True
+            #rolling sky
+            screen.blit(sky,(rotateTimer,0))
+            screen.blit(sky,(rotateTimer+8400,0))
+            rotateTimer -= 1
+            #far background
+            screen.blit(far_background, (0,0))
 
             #rolling background
             screen.blit(background,(rotateTimer,0))
-            screen.blit(background,(rotateTimer+700,0))
+            screen.blit(background,(rotateTimer+8400,0))
             rotateTimer -= 1
-
+            
             #Life points and stone
             screen.blit(stone,stonePosition)
-            if(1 <= life):           
+            if(1 <= life):
+                if dinox <= 185:
+                    addDinox = 1
+                else:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    addDinox = 0
                 screen.blit(heart1,life1Position)
             if(2 <= life):
                 screen.blit(heart1,life2Position)
+                if dinox <= 95:
+                    addDinox = 1
+                else:
+                    addDinox = 0
             if(3 <= life):
                 screen.blit(heart1,life3Position)
+                addDinox = 0 
 
             
-            #player animation 
-            if rotateTimer == -700:
+            #rotateTimer initializing 
+            if rotateTimer == -8400:
                 rotateTimer = 0
-                
+
+            
+            
             #player+dino animation        
             if timer%15 == 0:
                 screen.blit(player1, (playerx,260))
@@ -248,15 +357,11 @@ def main():
                 addPlayerx = 1
             if playerx == 320:
                 addPlayerx = -1
-            #moving dino back and forth
-            if dinox == 10:
-                addDinox = 1
-            if dinox == 40:
-                addDinox = -1
-                
+        
             playerx += addPlayerx
             dinox += addDinox
             timer += 1
+            
 
             screen.blit(cloud, (0,0))
 
@@ -328,19 +433,10 @@ def main():
                                 questionOn = False
                                 questionOnTimer = 0
 
-                    if event.type == QUIT:
-                        running = False
-                    elif event.type == KEYDOWN:
-                        state = SCENE_ESC
-                        play_bgm.stop()
-                        bgm = False
-                        running = False
-                    elif event.type == MOUSEBUTTONUP:
-                        mousex, mousey = event.pos
-
             #Dead
             if(life == 0):
                 state = SCENE_DEATH
+                timer = 0
 
         #Instruction page
         elif state == SCENE_INSTRUCTION:
@@ -359,24 +455,46 @@ def main():
 
         #Dead.  Show death animation
         elif state == SCENE_DEATH:
-            screen.blit(background,(0,0))
-            screen.blit(deathCharacter,deathCharacterPosition)
+            #rolling sky
+            screen.blit(sky,(rotateTimer,0))
+            screen.blit(sky,(rotateTimer+8400,0))
+            #far background
+            screen.blit(far_background, (0,0))
 
-            deathAnimationCounter += 1
+            #rolling background
+            screen.blit(background,(rotateTimer,0))
+            screen.blit(background,(rotateTimer+8400,0))
+            
+            #screen.blit(deathCharacter,deathCharacterPosition)
 
-            if(deathAnimationCounter == fps):
-                running = False
+            #deathAnimationCounter += 1
             
             play_bgm.stop()
             gameover_bgm.play()
             bgm = True
 
+            #bite animation        
+            if timer <= 4*1:
+                screen.blit(bite1, (dinox,270))
+            elif timer<= 4*2:
+                screen.blit(bite2, (dinox,270))
+            elif timer <= 4*3:
+                screen.blit(bite3, (dinox,270))
+            else:
+                if timer%2 == 0:
+                    screen.blit(bite4, (dinox,270))
+                else:
+                    screen.blit(bite5, (dinox,270))
+            
+            timer += 1
+            screen.blit(gameover_font, (0,0))
             screen.blit(home_button, (20,320))
             screen.blit(end_button2, (520,320))
             button5 = Button(Vec2(600,350))
             button5.setShape(RectShape(160,60))
             button6 = Button(Vec2(100,350))
             button6.setShape(RectShape(160,60))
+
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -388,6 +506,7 @@ def main():
                         state = SCENE_MAIN_MENU
                         gameover_bgm.stop()
                         bgm = False
+
 
         clock.tick(fps)
 
