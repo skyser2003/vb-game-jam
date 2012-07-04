@@ -12,6 +12,11 @@ from pygame.compat import geterror
 import random
 
 charDir = "images/character/"
+SCENE_MAIN_MENU = 0
+SCENE_GAME = 1
+SCENE_DEATH = 2
+SCENE_INSTRUCTION = 3
+SCENE_ESC = 4
 
 def createLoveQuestion(LoverFileName,LoveeFileName,OX):
     return LoveQuestion(charDir + LoverFileName,charDir + LoveeFileName,OX)
@@ -23,11 +28,12 @@ def main():
     
     background = pygame.image.load("images/background.png")
     redColor = pygame.Color(255,0,0)
-    #screen.blit(background, (0,0))
-    
-    #Load images and colors    
+
+    #Load images and colors
     background = pygame.image.load("images/background.png")
     sky = pygame.image.load("images/sky.png")
+    cloud = pygame.image.load("images/cloud.png")
+    heart = pygame.image.load("images/heart2.png")
     red = pygame.Color(255,0,0)
     green = pygame.Color(0,255,0)
     blue = pygame.Color(0,0,255)
@@ -43,7 +49,7 @@ def main():
     clock = pygame.time.Clock()
 
     running = True
-    state = 0
+    state = SCENE_MAIN_MENU
 
     #Fonts
     font = pygame.font.Font(None, 18)
@@ -61,8 +67,23 @@ def main():
     questionOn = False
     questionCurrentNo = -1
 
-    trueButton = Button(Vec2(460,60))
-    falseButton = Button(Vec2(460,260))
+    questionsLoverImage = []
+    questionsLoveeImage = []
+
+    LoverPosition = (191,72)
+    LoveePosition = (354,72)
+    
+    #Load questions image
+    for i in range(0,len(questions)):
+        questionsLoverImage.insert(i,pygame.image.load(questions[i].LoverDir))
+        questionsLoveeImage.insert(i,pygame.image.load(questions[i].LoveeDir))
+    
+    #True False buttons
+    trueButtonPosition = (484,84)
+    falseButtonPosition = (484,121)
+    
+    trueButton = Button(Vec2(trueButtonPosition[0],trueButtonPosition[1]))
+    falseButton = Button(Vec2(falseButtonPosition[0],falseButtonPosition[1]))
 
     trueButton.setShape(RectShape(120,120))
     falseButton.setShape(RectShape(120,120))
@@ -71,12 +92,12 @@ def main():
     rotateTimer = 0
     playerx = 300
     addx = 1
-    
+
     while running:
         screen.blit(sky, (0,0))
-         
+        
         #Main Menu
-        if state == 0:
+        if state == SCENE_MAIN_MENU:
             screen.blit(pygame.image.load("images/start.png"),(0,0))
 
             pygame.draw.rect(screen, red,(270,110,160,100))
@@ -93,19 +114,19 @@ def main():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
                     coord = Vec2(mousex,mousey)
-                    print (mousex,mousey)
+
                     if button1.isInner(coord) == True:
-                        state = 1
+                        state = SCENE_GAME
                     if button2.isInner(coord) == True:
-                        state = 2
+                        state = SCENE_INSTRUCTION
                     if button3.isInner(coord) == True:
                         running = False
 
                 #Game playing 
                 if event.type == KEYDOWN:
-                    state = 1
+                    state = SCENE_GAME
 
-        elif state == 1:
+        elif state == SCENE_GAME:
             #rolling background
             screen.blit(background,(rotateTimer,0))
             screen.blit(background,(rotateTimer+700,0))
@@ -115,35 +136,35 @@ def main():
 
             #player animation        
             if timer%15 == 0:
-                screen.blit(player1, (playerx,271))
+                screen.blit(player1, (playerx,260))
             elif timer%15 == 1:
-                screen.blit(player1, (playerx,271))
+                screen.blit(player1, (playerx,260))
             elif timer%15 == 2:
-                screen.blit(player2, (playerx,271))
+                screen.blit(player2, (playerx,260))
             elif timer%15 == 3:
-                screen.blit(player2, (playerx,271))
+                screen.blit(player2, (playerx,260))
             elif timer%15 == 4:
-                screen.blit(player3, (playerx,271))
+                screen.blit(player3, (playerx,260))
             elif timer%15 == 5:
-                screen.blit(player3, (playerx,271))
+                screen.blit(player3, (playerx,260))
             elif timer%15 == 6:
-                screen.blit(player3, (playerx,271))
+                screen.blit(player3, (playerx,260))
             elif timer%15 == 7:
-                screen.blit(player4, (playerx,271))
+                screen.blit(player4, (playerx,260))
             elif timer%15 == 8:
-                screen.blit(player4, (playerx,271))
+                screen.blit(player4, (playerx,260))
             elif timer%15 == 9:
-                screen.blit(player4, (playerx,271))
+                screen.blit(player4, (playerx,260))
             elif timer%15 == 10:
-                screen.blit(player3, (playerx,271))
+                screen.blit(player3, (playerx,260))
             elif timer%15 == 11:
-                screen.blit(player3, (playerx,271))
+                screen.blit(player3, (playerx,260))
             elif timer%15 == 12:
-                screen.blit(player2, (playerx,271))
+                screen.blit(player2, (playerx,260))
             elif timer%15 == 13:
-                screen.blit(player2, (playerx,271))
+                screen.blit(player2, (playerx,260))
             elif timer%15 == 14:
-                screen.blit(player1, (playerx,271))
+                screen.blit(player1, (playerx,260))
             #moving player back and forth
             if playerx == 280:
                 addx = 1
@@ -151,7 +172,9 @@ def main():
                 addx = -1
             
             playerx += addx
-            timer += 1 
+
+            timer += 1
+            #questions
 
             if(questionOn == False):
                 questionOffTimer += 1
@@ -166,29 +189,26 @@ def main():
 
             if(questionOnTimer == 60):
                 questionOnTimer = 0
-                questionOn = False
+                #questionOn = False
                 questionCurrentNo = -1
                 
-            #Show question
+            #Question is on.  Show question
             if(questionOn == True):
-                #Characters
-                screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),(0,0))
-                screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),(200,0))
-                #Buttons
-                screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),(400,0))
-                screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),(400,200))
-
+                #Draw cloud
+                screen.blit(cloud,(0,0))
+                #Draw characters
+                screen.blit(questionsLoverImage[questionCurrentNo],LoverPosition)
+                screen.blit(questionsLoveeImage[questionCurrentNo],LoveePosition)
+                #Draw buttons
+                screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),trueButtonPosition)
+                screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),falseButtonPosition)
+    
             for event in pygame.event.get():
                 #Quit game
                 if event.type == QUIT:
                     running = False
                 elif event.type == KEYDOWN:
-                    state = 3
-
-                #For Debugging, print mouse position
-                elif event.type == MOUSEMOTION:
-                    mousex, mousey = event.pos
-                    #print (mousex,mousey)
+                    state = SCENE_ESC
 
                 #Mouse clicked, check whether trueButton or falseButton is clicked
                 elif event.type == MOUSEBUTTONDOWN:
@@ -196,47 +216,33 @@ def main():
                     coord = Vec2(mousex,mousey)
 
                     if(trueButton.isInner(coord)):
-                        print "True clicked"
-
                         if(questionOn == True):
                             if(questions[questionCurrentNo].answer == True):
                                 print "Answer Correct!"
                             else:
                                 print "Answer Wrong!"
+                        else:
+                            print "True clicked"
 
                     if(falseButton.isInner(coord)):
-                        print "False Clicked"
-
                         if(questionOn == True):
                             if(questions[questionCurrentNo].answer == True):
                                 print "Answer Wrong"
                             else:
                                 print "Answer Correct!"
+                        else:
+                            print "False Clicked"
 
                     if event.type == QUIT:
                         running = False
                     elif event.type == KEYDOWN:
-                        state = 3
+                        state = SCENE_ESC
                         running = False
                     elif event.type == MOUSEBUTTONUP:
                         mousex, mousey = event.pos
 
-                        print (mousex,mousey)
-        elif state == 2:
-            pygame.draw.polygon(screen,redColor,
-                                (146,0),(291,106),(236,277),(56,277),(0,106))
-            for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    state = 0
-        elif state == 3:
-            pygame.draw.line(screen,redColor,(60,160),(120,60),4)
-            for event in pygame.event.get():
-                if event.type == KEYDOWN:
-                    state = 0
-
-        #?? second button in main menu
-
-        elif state == 2:
+        #Instruction
+        elif state == SCENE_INSTRUCTION:
             pygame.draw.rect(screen,black, (0,0,700,450))
             pygame.draw.rect(screen,white,(520,320,160,60))
             button4 = Button(Vec2(600,350))
@@ -246,12 +252,12 @@ def main():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
                     coord = Vec2(mousex,mousey)
-                    print (mousex,mousey)
+
                     if button4.isInner(coord) == True:
-                        state = 0
-            
+                        state = SCENE_MAIN_MENU
+
         #In-game menu(esc pressed)
-        elif state == 3:
+        elif state == SCENE_ESC:
             pygame.draw.rect(screen,black,(0,0,700,450))
             pygame.draw.rect(screen,white,(520,320,160,60))
             pygame.draw.rect(screen,white,(20,320,160,60))
@@ -263,12 +269,12 @@ def main():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
                     coord = Vec2(mousex,mousey)
-                    print (mousex,mousey)
+
                     if button5.isInner(coord) == True:
                         running = False
                     if button6.isInner(coord) == True:
-                        state = 0
-        
+                        state = SCENE_MAIN_MENU
+
         clock.tick(100)
         pygame.display.update()
 
