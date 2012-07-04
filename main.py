@@ -156,12 +156,14 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     font = pygame.font.Font(None,30)
     pygame.display.set_caption("Dinosaur Run")
-    background = pygame.image.load("images/background.png")
 
     #Load images and colors
     start = pygame.image.load("images/start.png") 
     background = pygame.image.load("images/background.png")
+    far_background = pygame.image.load("images/far_background.png")
+    background_ending = pygame.image.load("images/background_ending.png")
     sky = pygame.image.load("images/sky.png")
+    sky_ending = pygame.image.load("images/sky_ending.png")
     cloud = pygame.image.load("images/cloud.png")
     heart1 = pygame.image.load("images/heart.png")
     heart2 = pygame.image.load("images/heart2.png")
@@ -193,6 +195,12 @@ def main():
     dinoFrames[4] = pygame.image.load("images/dino4.png")
     
     deathCharacter = pygame.image.load("images/bite.png")
+    bite1 = pygame.image.load("images/bite1.png")
+    bite2 = pygame.image.load("images/bite2.png")
+    bite3 = pygame.image.load("images/bite3.png")
+    bite4 = pygame.image.load("images/bite4.png")
+    bite5 = pygame.image.load("images/bite5.png")
+    gameover_font = pygame.image.load("images/gameover.png")
 
     #Initial usic file import
     startmenu_bgm = pygame.mixer.Sound("sounds/startmenu.wav")
@@ -271,6 +279,7 @@ def main():
 
     addPlayerx = 1
     addDinox = 1
+    dinoCenter = 25
     life = 3
     bgm = False
     
@@ -282,7 +291,7 @@ def main():
     dinoFrameNo = -1
     
     while running:
-        screen.blit(sky, (0,0))
+
         
         #Main Menu
         if state == SCENE_MAIN_MENU:
@@ -290,17 +299,16 @@ def main():
                 startmenu_bgm.play()
                 bgm = True
             
-            screen.blit(start,(0,0))
-            screen.blit(start_button, (270,110))
-            screen.blit(instruction_button, (270,220))
-            screen.blit(end_button1, (270,330))
+            screen.blit(start_button, (270,190))
+            screen.blit(instruction_button, (270,270))
+            screen.blit(end_button1, (270,350))
 
-            button1 = Button(Vec2(350,160))
-            button1.setShape(RectShape(160,100))
-            button2 = Button(Vec2(350,270))
-            button2.setShape(RectShape(160,100))
+            button1 = Button(Vec2(350,220))
+            button1.setShape(RectShape(160,60))
+            button2 = Button(Vec2(350,300))
+            button2.setShape(RectShape(160,60))
             button3 = Button(Vec2(350,380))
-            button3.setShape(RectShape(160,100))
+            button3.setShape(RectShape(160,60))
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -330,23 +338,35 @@ def main():
             if bgm == False:
                 play_bgm.play()
                 bgm = True
+            #rolling sky
+            screen.blit(sky,(rotateTimer,0))
+            screen.blit(sky,(rotateTimer+8400,0))
+            rotateTimer -= 1
+            #far background
+            screen.blit(far_background, (0,0))
 
             #rolling background
             screen.blit(background,(rotateTimer,0))
-            screen.blit(background,(rotateTimer+700,0))
+            screen.blit(background,(rotateTimer+8400,0))
             rotateTimer -= 1
-
+            
             #Life points and stone
             screen.blit(stone,stonePosition)
 
-            for i in range(1,4):
-                if(i <= life):
-                    screen.blit(heart1,eval("life" + `i` + "Position"))
-
-            #player animation 
-            if rotateTimer == -700:
+            if(1 <= life):
+                screen.blit(heart1,life1Position)
+                dinoCenter = 185
+            if(2 <= life):
+                screen.blit(heart1,life2Position)
+                dinoCenter = 95
+            if(3 <= life):
+                screen.blit(heart1,life3Position)
+                dinoCenter = 25
+            
+            #rotateTimer initializing 
+            if rotateTimer == -8400:
                 rotateTimer = 0
-                
+
             #player+dino animation        
             drawPlayerAndDino(screen,timer,playerFrames,dinoFrames,playerPosition,dinoPosition)
             
@@ -355,10 +375,11 @@ def main():
                 addPlayerx = 1
             if playerPosition[0] == 320:
                 addPlayerx = -1
+
             #moving dino back and forth
-            if dinoPosition[0] == 10:
+            if dinoPosition[0] <= dinoCenter - 15:
                 addDinox = 1
-            if dinoPosition[0] == 40:
+            if dinoPosition[0] >= dinoCenter + 15:
                 addDinox = -1
                 
             playerPosition[0] += addPlayerx
@@ -442,6 +463,7 @@ def main():
             #Dead
             if(life == 0):
                 state = SCENE_DEATH
+                timer = 0
 
             #Start showing house
             if(houseOn == False and timer == goalTime - houseAppearTime):
@@ -482,19 +504,42 @@ def main():
 
         #Dead.  Show death animation
         elif state == SCENE_DEATH:
-            screen.blit(background,(0,0))
-            screen.blit(deathCharacter,deathCharacterPosition)
+            #rolling sky
+            screen.blit(sky,(rotateTimer,0))
+            screen.blit(sky,(rotateTimer+8400,0))
+            #far background
+            screen.blit(far_background, (0,0))
+
+            #rolling background
+            screen.blit(background,(rotateTimer,0))
+            screen.blit(background,(rotateTimer+8400,0))
 
             play_bgm.stop()
             gameover_bgm.play()
             bgm = True
 
+            #bite animation        
+            if timer <= 4*1:
+                screen.blit(bite1, (dinoPosition[0],270))
+            elif timer<= 4*2:
+                screen.blit(bite2, (dinoPosition[0],270))
+            elif timer <= 4*3:
+                screen.blit(bite3, (dinoPosition[0],270))
+            else:
+                if timer%2 == 0:
+                    screen.blit(bite4, (dinoPosition[0],270))
+                else:
+                    screen.blit(bite5, (dinoPosition[0],270))
+            
+            timer += 1
+            screen.blit(gameover_font, (0,0))
             screen.blit(home_button, (20,320))
             screen.blit(end_button2, (520,320))
             button5 = Button(Vec2(600,350))
             button5.setShape(RectShape(160,60))
             button6 = Button(Vec2(100,350))
             button6.setShape(RectShape(160,60))
+
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -522,6 +567,7 @@ def main():
 
             if(winAnimationCounter == 0):
                 running = False
+
 
         clock.tick(fps)
 
