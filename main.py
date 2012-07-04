@@ -147,16 +147,16 @@ def main():
                 startmenu_bgm.play()
                 bgm = True
             
-            screen.blit(start_button, (270,110))
-            screen.blit(instruction_button, (270,220))
-            screen.blit(end_button1, (270,330))
+            screen.blit(start_button, (270,190))
+            screen.blit(instruction_button, (270,270))
+            screen.blit(end_button1, (270,350))
 
-            button1 = Button(Vec2(350,160))
-            button1.setShape(RectShape(160,100))
-            button2 = Button(Vec2(350,270))
-            button2.setShape(RectShape(160,100))
+            button1 = Button(Vec2(350,220))
+            button1.setShape(RectShape(160,60))
+            button2 = Button(Vec2(350,300))
+            button2.setShape(RectShape(160,60))
             button3 = Button(Vec2(350,380))
-            button3.setShape(RectShape(160,100))
+            button3.setShape(RectShape(160,60))
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONUP:
                     mousex, mousey = event.pos
@@ -201,92 +201,6 @@ def main():
                 if dinox <= 185:
                     addDinox = 1
                 else:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     addDinox = 0
                 screen.blit(heart1,life1Position)
             if(2 <= life):
