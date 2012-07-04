@@ -216,7 +216,20 @@ def main():
     questions = []
     questions.insert(0,createLoveQuestion("cat.png","mouse.png",True))
     questions.insert(0,createLoveQuestion("monkey.png","banana.png",True))
-    questions.insert(0,createLoveQuestion("samsung.png","mac.png",False))
+    questions.insert(0,createLoveQuestion("ham.png","sfseed.png",True))
+    questions.insert(0,createLoveQuestion("dora.png","mouse.png",False))
+    questions.insert(0,createLoveQuestion("dora.png","dan.png",True))
+    questions.insert(0,createLoveQuestion("dracula.png","blood.png",True))
+    questions.insert(0,createLoveQuestion("dracula.png","garlic.png",False))
+    questions.insert(0,createLoveQuestion("mouse.png","cheese.png",True))
+    questions.insert(0,createLoveQuestion("bug.png","apple.png",True))
+    questions.insert(0,createLoveQuestion("snail.png","salt.png",False))
+    questions.insert(0,createLoveQuestion("rabbit.png","carrot.png",True))
+    questions.insert(0,createLoveQuestion("pica.png","monsterb.png",False))
+    questions.insert(0,createLoveQuestion("horse.png","carrot.png",True))
+    questions.insert(0,createLoveQuestion("zombie.png","sun.png",False))
+    questions.insert(0,createLoveQuestion("son.png","dragon.png",True))
+    questions.insert(0,createLoveQuestion("snow.png","apple.png",False))
     
     questionOffTimer = 0
     questionOnTimer = 0
@@ -283,7 +296,7 @@ def main():
     life = 3
     bgm = False
     
-    goalTime = 60 * fps
+    goalTime = 6 * fps
     playerDestinationX = 542
     deathAnimationCounter = 0
     winAnimationCounter = 5 * fps
@@ -393,17 +406,16 @@ def main():
             else:
                 questionOnTimer += 1
 
-            #If 120 frame has passed with question on, show question
-            if(questionOffTimer == 2 * fps):
+            #If 60 frame has passed with question off, show question
+            if(questionOffTimer == 1 * fps):
                 questionOffTimer = 0
                 questionOn = True
                 questionCurrentNo = random.randrange(0,len(questions))
 
-            #If 120 frame has passed with question on, remove question and decrease life
-            if(questionOnTimer == 2 * fps):
+            #If 60 frame has passed with question on, remove question, decrease life, and show next question
+            if(questionOnTimer == 1 * fps):
                 questionOnTimer = 0
-                questionOn = False
-                questionCurrentNo = -1
+                questionCurrentNo = random.randrange(0,len(questions))
                 life -= 1
  
             #Question is on.  Show question
@@ -440,8 +452,8 @@ def main():
                             else:
                                 life -= 1
 
-                            questionOn = False
                             questionOnTimer = 0
+                            questionCurrentNo = random.randrange(0,len(questions))
 
                     #False button clicked
                     if(falseButton.isInner(coord) == True):
@@ -452,8 +464,8 @@ def main():
                             else:
                                 None
 
-                            questionOn = False
                             questionOnTimer = 0
+                            questionCurrentNo = random.randrange(0,len(questions))
 
                     if event.type == QUIT:
                         running = False
@@ -555,8 +567,17 @@ def main():
         #Won!!
         elif state == SCENE_WIN:
             playerPosition[0] += addPlayerx
+            
+            #rolling sky
+            screen.blit(sky,(rotateTimer,0))
+            screen.blit(sky,(rotateTimer+8400,0))
+            #far background
+            screen.blit(far_background, (0,0))
+            #rolling background
+            screen.blit(background,(rotateTimer,0))
+            screen.blit(background,(rotateTimer+8400,0))
 
-            screen.blit(background,(0,0))
+
             drawDino(screen,timer,dinoFrames,dinoPosition)
             screen.blit(house,housePosition)
             drawPlayer(screen,timer,playerFrames,playerPosition)
