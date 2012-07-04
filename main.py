@@ -33,7 +33,6 @@ def main():
     blue = pygame.Color(0,0,255)
     white = pygame.Color(255,255,255)
     black = pygame.Color(0,0,0)
-  
 
     player1 = pygame.image.load("images/player1.png")
     player2 = pygame.image.load("images/player2.png")
@@ -114,7 +113,10 @@ def main():
             if rotateTimer == -700:
                 rotateTimer = 0
 
+<<<<<<< local
            
+=======
+>>>>>>> other
             #player animation        
             if timer%15 == 0:
                 screen.blit(player1, (playerx,260))
@@ -153,8 +155,10 @@ def main():
                 addx = -1
             
             playerx += addx
+
             timer += 1
             #questions
+
             if(questionOn == False):
                 questionOffTimer += 1
             else:
@@ -179,10 +183,8 @@ def main():
                 #Buttons
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),(400,0))
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),(400,200))
-              
-            timer += 1
-            #print timer
-
+          
+    
             for event in pygame.event.get():
                 #Quit game
                 if event.type == QUIT:
@@ -265,7 +267,7 @@ def main():
         
         clock.tick(100)
         pygame.display.update()
-    
+
     pygame.quit()
 
 if __name__ == '__main__':
