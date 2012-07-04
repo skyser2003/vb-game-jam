@@ -76,8 +76,6 @@ def main():
         screen.blit(sky, (0,0))
          
         #Main Menu
-        screen.blit(sky, (0,0))
-        
         if state == 0:
             screen.blit(pygame.image.load("images/start.png"),(0,0))
 
@@ -115,25 +113,6 @@ def main():
             if rotateTimer == -700:
                 rotateTimer = 0
 
-            screen.blit(sky, (0,0))
-            screen.blit(background, (0,0))
-
-            #rolling background
-            screen.blit(background,(rotateTimer,0))
-            screen.blit(background,(rotateTimer+700,0))
-            rotateTimer -= 1
-            if rotateTimer == -700:
-                rotateTimer = 0
-
-            """if timer%4 == 0:
-                screen.blit(player1, (playerx,271))
-            elif timer%4 == 1:
-                screen.blit(player1, (playerx,271))
-            elif timer%4 == 2:
-                screen.blit(player2, (playerx,271))
-            elif timer%4 == 3:
-                screen.blit(player2, (playerx,271))
-            """            
             #player animation        
             if timer%15 == 0:
                 screen.blit(player1, (playerx,271))
@@ -173,13 +152,6 @@ def main():
             
             playerx += addx
             timer += 1 
-
-            if timer%2 == 0:
-                screen.blit(player1, (300,271))
-            #elif timer%4 == 1:
-                #screen.blit(dino1, ())
-            elif timer%2 == 1:
-                screen.blit(player2, (300,271))
 
             if(questionOn == False):
                 questionOffTimer += 1
@@ -205,58 +177,7 @@ def main():
                 #Buttons
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoverDir),(400,0))
                 screen.blit(pygame.image.load(questions[questionCurrentNo].LoveeDir),(400,200))
-              
-            timer += 1
-            #print timer
-
-            """if timer%4 == 0:
-                screen.blit(player1, (playerx,271))
-            elif timer%4 == 1:
-                screen.blit(player1, (playerx,271))
-            elif timer%4 == 2:
-                screen.blit(player2, (playerx,271))
-            elif timer%4 == 3:
-                screen.blit(player2, (playerx,271))
-            """            
-            #player animation        
-            if timer%15 == 0:
-                screen.blit(player1, (playerx,271))
-            elif timer%15 == 1:
-                screen.blit(player1, (playerx,271))
-            elif timer%15 == 2:
-                screen.blit(player2, (playerx,271))
-            elif timer%15 == 3:
-                screen.blit(player2, (playerx,271))
-            elif timer%15 == 4:
-                screen.blit(player3, (playerx,271))
-            elif timer%15 == 5:
-                screen.blit(player3, (playerx,271))
-            elif timer%15 == 6:
-                screen.blit(player3, (playerx,271))
-            elif timer%15 == 7:
-                screen.blit(player4, (playerx,271))
-            elif timer%15 == 8:
-                screen.blit(player4, (playerx,271))
-            elif timer%15 == 9:
-                screen.blit(player4, (playerx,271))
-            elif timer%15 == 10:
-                screen.blit(player3, (playerx,271))
-            elif timer%15 == 11:
-                screen.blit(player3, (playerx,271))
-            elif timer%15 == 12:
-                screen.blit(player2, (playerx,271))
-            elif timer%15 == 13:
-                screen.blit(player2, (playerx,271))
-            elif timer%15 == 14:
-                screen.blit(player1, (playerx,271))
-            #moving player back and forth
-            if playerx == 280:
-                addx = 1
-            if playerx == 320:
-                addx = -1
-            
-            playerx += addx
-            timer += 1 
+          
     
             for event in pygame.event.get():
                 #Quit game
