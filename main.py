@@ -159,11 +159,11 @@ def main():
 
     #Load images and colors
     startpage = pygame.image.load("images/startpage.png")
+    instructionpage = pygame.image.load("images/instructionpage.png")
     background = pygame.image.load("images/background.png")
     far_background = pygame.image.load("images/far_background.png")
     background_ending = pygame.image.load("images/background_ending.png")
     sky = pygame.image.load("images/sky.png")
-    sky_ending = pygame.image.load("images/sky_ending.png")
     cloud = pygame.image.load("images/cloud.png")
     heart1 = pygame.image.load("images/heart.png")
     heart2 = pygame.image.load("images/heart2.png")
@@ -201,6 +201,7 @@ def main():
     bite4 = pygame.image.load("images/bite4.png")
     bite5 = pygame.image.load("images/bite5.png")
     gameover_font = pygame.image.load("images/gameover.png")
+    safely_home_font = pygame.image.load("images/safelyhome.png")
 
     #Initial usic file import
     startmenu_bgm = pygame.mixer.Sound("sounds/startmenu.wav")
@@ -216,7 +217,7 @@ def main():
     questions = []
     questions.insert(0,createLoveQuestion("cat.png","mouse.png",True))
     questions.insert(0,createLoveQuestion("monkey.png","banana.png",True))
-    questions.insert(0,createLoveQuestion("ham.png","sfseed.png",True))
+    #questions.insert(0,createLoveQuestion("ham.png","sfseed.png",True))
     questions.insert(0,createLoveQuestion("dora.png","mouse.png",False))
     questions.insert(0,createLoveQuestion("dora.png","dan.png",True))
     questions.insert(0,createLoveQuestion("dracula.png","blood.png",True))
@@ -299,7 +300,7 @@ def main():
     goalTime = 6 * fps
     playerDestinationX = 542
     deathAnimationCounter = 0
-    winAnimationCounter = 5 * fps
+    winAnimationCounter = 3 * fps
     playerFrameNo = -1
     dinoFrameNo = -1
     
@@ -311,6 +312,26 @@ def main():
             if bgm == False:
                 startmenu_bgm.play()
                 bgm = True
+
+            #Position initializing start
+            playerPosition = [300,260]
+            dinoPosition = [15,300]
+
+            housePosition = (700,houseFinalPosition[1])
+            houseBackPosition = (housePosition[0] + houseBackFinalPosition[0] - houseFinalPosition[0],houseBackFinalPosition[1])
+            houseMoveTimer = 0
+                        
+            life = 3
+            timer = 0
+            deathAnimationCounter = 0
+            winAnimationCounter = 3 * fps
+            houseMoveTimer = 0
+            houseOn = False
+            
+            rotateTimer = 0            
+            deathCharacterPosition = (250,310)
+            #Position initializing end
+            
             screen.blit(startpage, (0,0))
             screen.blit(start_button, (270,210))
             screen.blit(instruction_button, (270,280))
@@ -328,14 +349,7 @@ def main():
                     coord = Vec2(mousex,mousey)
 
                     if button1.isInner(coord) == True:
-                        state = SCENE_GAME
-                        
-                        life = 3
-                        timer = 0
-                        deathAnimationCounter = 0
-                        winAnimationCounter = 5 * fps
-                        houseMoveTimer = 0
-                        
+                        state = SCENE_GAME                        
                         startmenu_bgm.stop()
                         bgm = False
 
@@ -475,6 +489,8 @@ def main():
             #Dead
             if(life == 0):
                 state = SCENE_DEATH
+                play_bgm.stop()
+                bgm = False
                 timer = 0
 
             #Start showing house
@@ -490,6 +506,8 @@ def main():
                 ++houseMoveTimer
 
             if(timer == goalTime):
+                play_bgm.stop()
+                bgm = False
                 state = SCENE_WIN
                 addPlayerx = (playerDestinationX - playerPosition[0]) * 1.0 / (winAnimationCounter * 1.0)
 
@@ -501,7 +519,7 @@ def main():
             
         #Instruction page
         elif state == SCENE_INSTRUCTION:
-            screen.blit(startpage, (0,0))
+            screen.blit(instructionpage, (0,0))
             screen.blit(home_button, (520,320))
             button4 = Button(Vec2(600,350))
             button4.setShape(RectShape(160,60))
@@ -525,10 +543,11 @@ def main():
             #rolling background
             screen.blit(background,(rotateTimer,0))
             screen.blit(background,(rotateTimer+8400,0))
-
-            play_bgm.stop()
-            gameover_bgm.play()
-            bgm = True
+            
+            
+            if bgm == False:
+                gameover_bgm.play()
+                bgm = True
 
             #bite animation        
             if timer <= 4*1:
@@ -566,6 +585,9 @@ def main():
                         
         #Won!!
         elif state == SCENE_WIN:
+            if bgm == False:
+                startmenu_bgm.play()
+                bgm = True
             playerPosition[0] += addPlayerx
             
             #rolling sky
@@ -583,12 +605,30 @@ def main():
             drawPlayer(screen,timer,playerFrames,playerPosition)
             screen.blit(houseBack,houseBackPosition)
 
-            timer += 1
-            winAnimationCounter -= 1
 
-            if(winAnimationCounter == 0):
-                running = False
 
+            if(winAnimationCounter != 0):
+                timer += 1
+                winAnimationCounter -= 1
+            else:
+                addPlayerx = 0
+                screen.blit(safely_home_font, (0,0))
+                screen.blit(home_button, (20,320))
+                screen.blit(end_button2, (520,320))
+                button5 = Button(Vec2(600,350))
+                button5.setShape(RectShape(160,60))
+                button6 = Button(Vec2(100,350))
+                button6.setShape(RectShape(160,60))
+                for event in pygame.event.get():
+                    if event.type == MOUSEBUTTONUP:
+                        mousex, mousey = event.pos
+                        coord = Vec2(mousex,mousey)
+
+                        if button5.isInner(coord) == True:
+                            running = False
+                        if button6.isInner(coord) == True:
+                            state = SCENE_MAIN_MENU
+                            
 
         clock.tick(fps)
 
